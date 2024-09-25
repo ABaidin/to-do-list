@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Add/Edit Tag{% endblock %}
+
+{% block content %}
+  <h1>{% if object %}Edit Tag{% else %}Add New Tag{% endif %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">{% if object %}Update{% else %}Add Tag{% endif %}</button>
+    <a href="{% url 'tasks:tag-list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}Add/Edit Task{% endblock %}
+
+{% block content %}
+  <h1>{% if object %}Edit Task{% else %}Add New Task{% endif %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">{% if object %}Update{% else %}Add Task{% endif %}</button>
+    <a href="{% url 'tasks:home' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
