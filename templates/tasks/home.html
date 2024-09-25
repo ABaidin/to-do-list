@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>TODO List</h1>
+    <a href="{% url 'tasks:task-add' %}" class="btn btn-success">Add New Task</a>
+  </div>
+
+  {% for task in tasks %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title">{{ task.content }}</h5>
+          <span class="{% if task.is_done %}text-success{% else %}text-danger{% endif %} fw-bold">
+                    {% if task.is_done %}Done{% else %}Not Done{% endif %}
+                </span>
+        </div>
+
+        <p class="card-text">
+          Created: {{ task.created_at|date:"F j, Y, g:i a" }}
+          {% if task.deadline %}, Deadline: {{ task.deadline|date:"F j, Y, g:i a" }}{% endif %}
+        </p>
+
+        <p class="card-text">
+          Tags:
+          {% for tag in task.tags.all %}
+            <span class="badge bg-primary">{{ tag.name }}</span>
+          {% endfor %}
+        </p>
+
+        <div class="d-flex justify-content-between">
+          <div>
+            <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-primary btn-sm">Update</a>
+            <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
+          </div>
+
+          <a href="{% url 'tasks:task-toggle' task.pk %}" class="btn btn-info btn-sm">
+            {% if task.is_done %}Undo{% else %}Complete{% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No tasks available.</p>
+  {% endfor %}
+{% endblock %}
